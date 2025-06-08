@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sleek Bowling Scorecard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    body {
+      background: #121212; /* Very dark charcoal */
+      color: #e0e0e0; /* Light grey text */
+      font-family: 'Share Tech Mono', monospace;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 5px;
+      font-weight: 700;
+      color: #f5f5f5;
+      user-select: none;
+      letter-spacing: 2px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #bbbbbb;
+      user-select: none;
+    }
+
+    label {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 40px;
+      user-select: none;
+    }
+
+    input[type="text"] {
+      font-size: 1.3rem;
+      padding: 10px 18px;
+      border-radius: 14px;
+      border: 2px solid #666666;
+      background: #1e1e1e;
+      color: #ddd;
+      outline-offset: 3px;
+      width: 220px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: inset 0 0 5px #000000cc;
+    }
+    input[type="text"]:focus {
+      border-color: #555555;
+      box-shadow: none;
+      background: #272727;
+      color: #fff;
+    }
+
+    button {
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: 700;
+      font-size: 1.25rem;
+      padding: 10px 22px;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      background: #444444;
+      color: #eee;
+      box-shadow: none;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #666666;
+      color: #fff;
+    }
+
+    #scorecards {
+      width: 100%;
+      max-width: 1250px;
+      overflow-x: auto;
+      padding-bottom: 60px;
+    }
+
+    /* Make each player’s container a flex row: table + total on right */
+    .player-container {
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 50px;
+      max-width: 1250px;
+      width: 100%;
+    }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      background-color: #1c1c1c;
+      color: #e0e0e0;
+      box-shadow: none;
+      width: 100%;
+      min-width: 880px;
+      table-layout: fixed;
+      border-radius: 16px 0 0 16px;
+      overflow: hidden;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    th, td {
+      border-left: 1.5px solid #333333;
+      border-top: 1.5px solid #333333;
+      padding: 12px 0;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    th:first-child, td:first-child {
+      border-left: none;
+    }
+    tr:first-child th, tr:first-child td {
+      border-top: none;
+    }
+
+    th {
+      background-color: #2e2e2e;
+      color: #c8c8c8;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      background-color: transparent;
+      color: #f0f0f0;
+      border: none;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      user-select: none;
+      cursor: default;
+      letter-spacing: 1px;
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+    input:focus {
+      outline: none;
+    }
+
+    input[value="X"] {
+      color: #88cc88;
+      font-weight: 900;
+    }
+    input[value="/"] {
+      color: #a0a0a0;
+      font-weight: 800;
+    }
+
+    /* Total displayed in a separate vertical panel on right */
+    .total-container {
+      width: 120px;
+      background: #121212;
+      color: #e0e0e0; /* light grey same as body */
+      font-weight: 900;
+      font-size: 1.8rem;
+      border-radius: 0 16px 16px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      user-select: none;
+      box-shadow: none; /* remove green glow */
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* When active player */
+    .player-container.active .total-container {
+      background-color: #ffffff;
+      color: #000000;
+      box-shadow: none; /* no glow on active either */
+    }
+
+    /* Highlight active player's table and total */
+    table.active {
+      background-color: #ffffff;
+      color: #000000;
+      box-shadow: none;
+    }
+
+    table.active th,
+    table.active td,
+    table.active input {
+      color: #000000 !important;
+      background-color: #ffffff !important;
+    }
+
+    .player-container.active table.active {
+      /* extra safety to ensure highlight */
+      background-color: #fff;
+      color: #000;
+      box-shadow: none;
+    }
+
+    /* Scrollbar for scorecards */
+    #scorecards::-webkit-scrollbar {
+      height: 8px;
+    }
+    #scorecards::-webkit-scrollbar-thumb {
+      background: #555555;
+      border-radius: 12px;
+    }
+    #scorecards::-webkit-scrollbar-track {
+      background: #121212;
+    }
+
+    #connection-status {
+      margin-top: 20px;
+      font-family: monospace;
+      color: #ccc;
+      user-select: none;
+    }
+
+    #my-id {
+      margin-top: 8px;
+      font-family: monospace;
+      font-weight: 700;
+      color: #ddd;
+      user-select: text;
+      background: #222;
+      padding: 6px 12px;
+      border-radius: 8px;
+      max-width: 160px;
+      overflow-wrap: break-word;
+      cursor: default;
+    }
+
+    #connect-section {
+      margin-top: 15px;
+      user-select: none;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #connect-section input[type="text"] {
+      width: 130px;
+      font-size: 1rem;
+      padding: 6px 10px;
+      border-radius: 10px;
+    }
+
+    #connect-section button {
+      padding: 8px 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bowling Scorecard</h1>
+  <p>Type pins (0-9), 'X' for strike, '/' for spare. Players alternate turns each frame.</p>
+  <label>
+    Player Name: <input type="text" id="playerName" autocomplete="off" />
+    <button onclick="addPlayer()">Add Player</button>
+  </label>
+
+  <div id="scorecards"></div>
+
+  <div id="connection-status">Connecting to PeerJS server...</div>
+  <div id="my-id">Your ID: ...</div>
+
+  <div id="connect-section">
+    <input type="text" id="connect-to-id" placeholder="Enter peer ID" autocomplete="off" />
+    <button id="connect-btn">Connect</button>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
+<script>
+class BowlingGame {
+  constructor(name) {
+    this.name = name;
+    this.throws = [];
+    this.currentThrow = 0;
+    this.frame = 0;
+    this.ballInFrame = 0;
+    this.finished = false;
+
+    this.createScorecard();
+  }
+
+  createScorecard() {
+    const container = document.getElementById('scorecards');
+
+    // Wrap table + total in a flex container
+    this.playerContainer = document.createElement('div');
+    this.playerContainer.classList.add('player-container', 'active');
+
+    this.table = document.createElement('table');
+    this.table.classList.add('active');
+
+    const header = document.createElement('tr');
+    header.innerHTML = `<th colspan="21">${this.name}</th>`;
+    this.table.appendChild(header);
+
+    const framesRow = document.createElement('tr');
+    for (let i = 1; i <= 10; i++) {
+      const th = document.createElement('th');
+      th.colSpan = i === 10 ? 3 : 2;
+      th.textContent = `Frame ${i}`;
+      framesRow.appendChild(th);
+    }
+    this.table.appendChild(framesRow);
+
+    this.throwRow = document.createElement('tr');
+    for (let i = 0; i < 21; i++) {
+      const td = document.createElement('td');
+      const input = document.createElement('input');
+      input.readOnly = true;
+      td.appendChild(input);
+      this.throwRow.appendChild(td);
+    }
+    this.table.appendChild(this.throwRow);
+
+    // Create total container separately (on right)
+    this.totalContainer = document.createElement('div');
+    this.totalContainer.className = 'total-container';
+    this.totalContainer.textContent = 'Total: 0';
+
+    // Append table and total container to player container
+    this.playerContainer.appendChild(this.table);
+    this.playerContainer.appendChild(this.totalContainer);
+
+    container.appendChild(this.playerContainer);
+  }
+
+  isStrike(throwIndex) {
+    return this.throws[throwIndex] === 10;
+  }
+
+  isSpare(throwIndex) {
+    return (this.throws[throwIndex] + this.throws[throwIndex + 1]) === 10;
+  }
+
+  score() {
+    let score = 0;
+    let throwIndex = 0;
+    for (let frame = 0; frame < 10; frame++) {
+      if (this.isStrike(throwIndex)) {
+        score += 10 + (this.throws[throwIndex + 1] || 0) + (this.throws[throwIndex + 2] || 0);
+        throwIndex += 1;
+      } else if (this.isSpare(throwIndex)) {
+        score += 10 + (this.throws[throwIndex + 2] || 0);
+        throwIndex += 2;
+      } else {
+        score += (this.throws[throwIndex] || 0) + (this.throws[throwIndex + 1] || 0);
+        throwIndex += 2;
+      }
+    }
+    return score;
+  }
+
+  canThrowPins(pins) {
+    if (this.finished) return false;
+
+    if (this.frame < 9) {
+      if (this.ballInFrame === 0) {
+        return pins >= 0 && pins <= 10;
+      } else if (this.ballInFrame === 1) {
+        const firstThrow = this.throws[this.currentThrow - 1];
+        return pins >= 0 && pins <= (10 - firstThrow);
+      }
+    } else {
+      if (this.ballInFrame === 0) return pins >= 0 && pins <= 10;
+      if (this.ballInFrame === 1) {
+        const firstThrow = this.throws[this.currentThrow - 1];
+        if (firstThrow === 10) return pins >= 0 && pins <= 10;
+        return pins >= 0 && pins <= (10 - firstThrow);
+      }
+      if (this.ballInFrame === 2) {
+        const secondThrow = this.throws[this.currentThrow - 1];
+        if ((this.throws[this.currentThrow - 2] === 10 || (this.throws[this.currentThrow - 2] + secondThrow) === 10)) {
+          return pins >= 0 && pins <= 10;
+        }
+        return false;
+      }
+    }
+    return false;
+  }
+
+  addThrow(pins) {
+    if (!this.canThrowPins(pins)) return false;
+
+    this.throws[this.currentThrow++] = pins;
+
+    if (this.frame < 9) {
+      if (this.ballInFrame === 0) {
+        if (pins === 10) {
+          this.frame++;
+          this.ballInFrame = 0;
+        } else {
+          this.ballInFrame = 1;
+        }
+      } else {
+        this.frame++;
+        this.ballInFrame = 0;
+      }
+    } else {
+      this.ballInFrame++;
+      if (this.ballInFrame === 3 || (this.ballInFrame === 2 && this.throws[this.currentThrow - 2] + pins < 10)) {
+        this.finished = true;
+      }
+      if (this.ballInFrame === 3 || this.finished) {
+        this.frame++;
+      }
+    }
+    return true;
+  }
+
+  getDisplayScores() {
+    const display = [];
+    let i = 0;
+    for (let frame = 0; frame < 10; frame++) {
+      if (this.throws[i] === undefined) {
+        if (frame === 9) {
+          display.push('', '', '');
+        } else {
+          display.push('', '');
+        }
+        continue;
+      }
+
+      if (frame < 9) {
+        if (this.throws[i] === 10) {
+          display.push('X', '');
+          i += 1;
+        } else {
+          const first = this.throws[i];
+          const second = this.throws[i + 1];
+          display.push(
+            first === 0 ? '-' : first,
+            (first + (second || 0) === 10) ? '/' : (second === undefined ? '' : (second === 0 ? '-' : second))
+          );
+          i += 2;
+        }
+      } else {
+        for (let j = 0; j < 3; j++) {
+          if (this.throws[i] === undefined) {
+            display.push('');
+          } else {
+            let val = this.throws[i];
+            if (val === 10) val = 'X';
+            else if (j > 0 && (this.throws[i - 1] + val === 10)) val = '/';
+            else if (val === 0) val = '-';
+            display.push(val);
+            i++;
+          }
+        }
+      }
+    }
+    return display;
+  }
+
+  updateUI() {
+    const displayScores = this.getDisplayScores();
+    const inputs = this.throwRow.querySelectorAll('input');
+
+    inputs.forEach((input, idx) => {
+      input.value = displayScores[idx] || '';
+    });
+
+    this.totalContainer.textContent = `Total: ${this.score()}`;
+  }
+}
+
+const players = [];
+let currentPlayerIndex = 0;
+
+function addPlayer() {
+  const input = document.getElementById('playerName');
+  const name = input.value.trim();
+  if (!name) return alert("Please enter a player name.");
+
+  const game = new BowlingGame(name);
+  players.push(game);
+  input.value = '';
+
+  updateCurrentPlayerHighlight();
+  sendState();
+}
+
+function updateCurrentPlayerHighlight() {
+  players.forEach((player, idx) => {
+    if (player.table && player.playerContainer) {
+      if (idx === currentPlayerIndex) {
+        player.table.classList.add('active');
+        player.playerContainer.classList.add('active');
+      } else {
+        player.table.classList.remove('active');
+        player.playerContainer.classList.remove('active');
+      }
+    }
+  });
+}
+
+window.addEventListener('keydown', (e) => {
+  if (players.length === 0) return;
+  const key = e.key.toUpperCase();
+  if (!['0','1','2','3','4','5','6','7','8','9','X','/'].includes(key)) return;
+
+  const player = players[currentPlayerIndex];
+
+  let pins;
+  if (key === 'X') pins = 10;
+  else if (key === '/') {
+    const prevThrow = player.throws[player.currentThrow - 1] || 0;
+    pins = 10 - prevThrow;
+  } else {
+    pins = parseInt(key);
+  }
+
+  const added = player.addThrow(pins);
+  if (!added) {
+    alert("Invalid throw for this frame.");
+    return;
+  }
+
+  player.updateUI();
+
+  if (player.ballInFrame === 0 || player.finished) {
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    updateCurrentPlayerHighlight();
+  }
+
+  sendState();
+
+  e.preventDefault();
+});
+
+// --- PEERJS INTEGRATION WITH SHORT ID GENERATOR ---
+
+function generateShortId() {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let id = '';
+  for (let i = 0; i < 5; i++) {
+    id += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return id;
+}
+
+const shortId = generateShortId();
+const peer = new Peer(shortId);
+
+const connectionStatus = document.getElementById('connection-status');
+const myIdDisplay = document.getElementById('my-id');
+const connectBtn = document.getElementById('connect-btn');
+const connectToIdInput = document.getElementById('connect-to-id');
+
+myIdDisplay.textContent = `Your ID: ${shortId}`;
+
+let conn = null;
+
+peer.on('open', id => {
+  connectionStatus.textContent = `Connected to PeerJS server with ID: ${id}`;
+});
+
+peer.on('error', err => {
+  connectionStatus.textContent = `Error: ${err}`;
+});
+
+peer.on('connection', connection => {
+  if (conn) {
+    connection.close(); // Only allow one connection at a time
+    return;
+  }
+  conn = connection;
+  connectionStatus.textContent = `Connected to peer: ${conn.peer}`;
+
+  setupConnectionHandlers(conn);
+});
+
+connectBtn.addEventListener('click', () => {
+  const peerId = connectToIdInput.value.trim();
+  if (!peerId) return alert('Please enter a peer ID to connect.');
+
+  if (conn) conn.close();
+
+  conn = peer.connect(peerId);
+
+  conn.on('open', () => {
+    connectionStatus.textContent = `Connected to peer: ${conn.peer}`;
+    setupConnectionHandlers(conn);
+    sendState();
+  });
+
+  conn.on('error', err => {
+    connectionStatus.textContent = `Connection error: ${err}`;
+  });
+});
+
+function setupConnectionHandlers(connection) {
+  connection.on('data', data => {
+    if (data.type === 'state') {
+      loadState(data.payload);
+    }
+  });
+
+  connection.on('close', () => {
+    connectionStatus.textContent = 'Connection closed.';
+    conn = null;
+  });
+}
+
+function sendState() {
+  if (conn && conn.open) {
+    const state = {
+      players: players.map(p => ({
+        name: p.name,
+        throws: p.throws,
+        currentThrow: p.currentThrow,
+        frame: p.frame,
+        ballInFrame: p.ballInFrame,
+        finished: p.finished
+      })),
+      currentPlayerIndex,
+    };
+    conn.send({type: 'state', payload: state});
+  }
+}
+
+function loadState(state) {
+  // Remove all existing players UI
+  const container = document.getElementById('scorecards');
+  container.innerHTML = '';
+
+  players.length = 0;
+
+  if (!state || !state.players) return;
+
+  for (const pData of state.players) {
+    const game = new BowlingGame(pData.name);
+    game.throws = pData.throws || [];
+    game.currentThrow = pData.currentThrow || 0;
+    game.frame = pData.frame || 0;
+    game.ballInFrame = pData.ballInFrame || 0;
+    game.finished = pData.finished || false;
+    game.updateUI();
+    players.push(game);
+  }
+  currentPlayerIndex = state.currentPlayerIndex || 0;
+  updateCurrentPlayerHighlight();
+}
+</script>
+</body>
+</html>
