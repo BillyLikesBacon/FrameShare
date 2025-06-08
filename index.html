@@ -265,7 +265,7 @@
   </style>
 </head>
 <body>
-  <h1>Bowling Scorecard</h1>
+  <h1>FrameShare</h1>
   <p>Type pins (0-9), 'X' for strike, '/' for spare. Players alternate turns each frame.</p>
   <label>
     Player Name: <input type="text" id="playerName" autocomplete="off" />
@@ -568,7 +568,7 @@ myIdDisplay.textContent = `Your ID: ${shortId}`;
 let conn = null;
 
 peer.on('open', id => {
-  connectionStatus.textContent = `Connected to PeerJS server with ID: ${id}`;
+  connectionStatus.textContent = `Enter a user ID to create a connection.`;
 });
 
 peer.on('error', err => {
