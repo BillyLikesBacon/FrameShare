@@ -135,17 +135,21 @@
   }
 
   .player-scroll {
-  overflow-x: auto;
-  display: flex;
-  gap: 12px;
-  scroll-snap-type: x mandatory;
-  background: #111;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 100vw;
-  padding: 10px;
-  box-sizing: border-box;
-}
+    overflow-y: auto;   /* vertical scroll */
+    overflow-x: hidden; /* prevent horizontal scroll */
+    display: flex;
+    flex-direction: column;  /* stack vertically */
+    gap: 12px;
+    scroll-snap-type: y mandatory; /* scroll snap vertically */
+    max-height: 90vh;  /* limit vertical height so scrolling triggers */
+    background: #111;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 100vw;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
 
   .player-container {
     flex: 0 0 auto;
