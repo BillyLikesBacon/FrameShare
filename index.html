@@ -15,33 +15,16 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    background-color: #121212;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* Add safe area padding to body */
-  body {
-    padding-top: env(safe-area-inset-top);
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    padding-bottom: env(safe-area-inset-bottom);
-    overflow-x: auto;
-  }
-
-  /* To ensure background fills the entire viewport */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: #121212;
-    z-index: -1;
-  }
-
+    html {
+     min-height: calc(100% + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+     ...
+    background-attachment: fixed;
+    background-image: url('/bg.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
 
 
     html, body {
