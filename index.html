@@ -183,17 +183,21 @@
     word-wrap: break-word;
   }
 
-  table input {
-    width: 100%;  /* fill cell */
-    max-width: 30px;
+  .player-container table input {
+    width: 100%;
     text-align: center;
-    background: #000;
+    font-size: 1.2rem;
+    background: transparent;
     color: white;
     border: none;
-    font-weight: bold;
-    box-sizing: border-box;
-    padding: 2px;
   }
+
+  @media (max-width: 600px) {
+    .player-container table input {
+      font-size: 0.9rem;
+    }
+  }
+
 
   .total-container {
     font-size: 1.2em;
@@ -291,7 +295,7 @@
   }
 
   .total-container {
-    width: 120px;
+    width: 80px;
     background: #121212;
     color: #e0e0e0;
     font-weight: 900;
@@ -306,12 +310,12 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* Mobile adjustments */
+  /* Mobile styles */
   @media (max-width: 600px) {
     .total-container {
       font-size: 1rem;
-      width: 80px;
-      padding: 0 8px;
+      width: 60px;
+      padding: 0 6px;
       border-radius: 0 12px 12px 0;
     }
   }
