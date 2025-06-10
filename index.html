@@ -7,405 +7,310 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#121212" />
+  <meta name="theme-color" content="#444444" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FrameShare</title></title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-  html {
-    min-height: calc(100% + env(safe-area-inset-top));
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    background-attachment: fixed;
-    background-image: url('/bg.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-
-  .left-sidebar {
-    padding: env(safe-area-inset-top) 0 0 env(safe-area-inset-left);
-  }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    height: 100%;
-    touch-action: none;
-    overscroll-behavior: none;
-    -webkit-overflow-scrolling: auto;
-  }
-
-  body {
-    background: #121212;
-    color: #e0e0e0;
-    font-family: 'Share Tech Mono', monospace;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    box-sizing: border-box;
-  }
-
-  body {
-    background: #121212;
-    color: #e0e0e0;
-    font-family: 'Share Tech Mono', monospace;
-    padding: 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-  }
-
-  h1 {
-    font-size: 3rem;
-    margin-bottom: 5px;
-    font-weight: 700;
-    color: #f5f5f5;
-    user-select: none;
-    letter-spacing: 2px;
-  }
-
-  p {
-    font-size: 1.1rem;
-    margin-bottom: 25px;
-    color: #bbbbbb;
-    user-select: none;
-  }
-
-  label {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-    margin-bottom: 40px;
-    user-select: none;
-  }
-
-  input[type="text"] {
-    font-size: 1.3rem;
-    padding: 5px 10px;
-    border-radius: 14px;
-    border: 2px solid #666666;
-    background: #1e1e1e;
-    color: #ddd;
-    outline-offset: 3px;
-    width: 220px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: inset 0 0 5px #000000cc;
-  }
-
-  input[type="text"]:focus {
-    border-color: #555555;
-    box-shadow: none;
-    background: #272727;
-    color: #fff;
-  }
-
-  button {
-    font-family: 'Share Tech Mono', monospace;
-    font-weight: 700;
-    font-size: 1.25rem;
-    padding: 5px 12px;
-    border-radius: 16px;
-    border: none;
-    cursor: pointer;
-    background: #444444;
-    color: #eee;
-    box-shadow: none;
-    transition: background 0.3s ease;
-  }
-
-  button:hover {
-    background: #666666;
-    color: #fff;
-  }
-
-  #scorecards {
-    width: 100%;
-    max-width: 1250px;
-    padding-bottom: 10px;
-  }
-
-  .player-scroll {
-    overflow-y: auto;   /* vertical scroll */
-    overflow-x: hidden; /* prevent horizontal scroll */
-    display: flex;
-    flex-direction: column;  /* stack vertically */
-    gap: 12px;
-    scroll-snap-type: y mandatory; /* scroll snap vertically */
-    max-height: 90vh;  /* limit vertical height so scrolling triggers */
-    background: #111;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 100vw;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-
-
-  .player-container {
-    flex: 0 0 auto;
-    min-width: 260px; /* reduced from 300 */
-    max-width: 90vw;  /* allow container to shrink on mobile */
-    scroll-snap-align: start;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    background: rgba(34, 34, 34, 0.8); /* translucent box, adjust opacity */
-    padding: 10px;
-    border-radius: 8px;
-    color: white;
-    box-sizing: border-box;
-    overflow: hidden; /* prevent content overflow */
-  }
-
-  table {
-    background: #000;
-    border-collapse: collapse;
-    color: white;
-    width: 100%; /* full width of container */
-    table-layout: fixed; /* force fixed layout for responsive */
-  }
-
-  table th,
-  table td {
-    padding: 2px 4px;
-    text-align: center;
-    word-wrap: break-word;
-  }
-
-  .player-container table input {
-    width: 100%;
-    text-align: center;
-    font-size: 1.2rem;
-    background: transparent;
-    color: white;
-    border: none;
-  }
-
-  @media (max-width: 600px) {
-    .player-container table input {
-      font-size: 0.9rem;
+      html {
+      min-height: calc(100% + env(safe-area-inset-top));
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      background-attachment: fixed;
+      background-image: url('/bg.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
-  }
 
+    .left-sidebar {
+     padding: env(safe-area-inset-top) 0 0 env(safe-area-inset-left);
+    }
 
-  .total-container {
-    font-size: 1.2em;
-    font-weight: bold;
-    white-space: nowrap;
-    padding-left: 10px;
-    flex-shrink: 0; /* don’t shrink */
-  }
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scrolling */
+      height: 100%;
+      touch-action: none; /* Disable gestures */
+      overscroll-behavior: none; /* Prevent pull-to-refresh on mobile */
+      -webkit-overflow-scrolling: auto;
+    }
 
-  /* Optional: smaller min-width on very small devices */
-  @media (max-width: 480px) {
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      font-family: 'Share Tech Mono', monospace;
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: fixed; /* Prevent resizing */
+      width: 100vw;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* ... everything else stays unchanged ... */
+
+    body {
+      background: #121212; /* Very dark charcoal */
+      color: #e0e0e0; /* Light grey text */
+      font-family: 'Share Tech Mono', monospace;
+      padding: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 5px;
+      font-weight: 700;
+      color: #f5f5f5;
+      user-select: none;
+      letter-spacing: 2px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      color: #bbbbbb;
+      user-select: none;
+    }
+
+    label {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 40px;
+      user-select: none;
+    }
+
+    input[type="text"] {
+      font-size: 1.3rem;
+      padding: 5px 10px;
+      border-radius: 14px;
+      border: 2px solid #666666;
+      background: #1e1e1e;
+      color: #ddd;
+      outline-offset: 3px;
+      width: 220px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: inset 0 0 5px #000000cc;
+    }
+    input[type="text"]:focus {
+      border-color: #555555;
+      box-shadow: none;
+      background: #272727;
+      color: #fff;
+    }
+
+    button {
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: 700;
+      font-size: 1.25rem;
+      padding: 5px 12px;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      background: #444444;
+      color: #eee;
+      box-shadow: none;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #666666;
+      color: #fff;
+    }
+
+    #scorecards {
+      width: 100%;
+      max-width: 1250px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+
+    /* Make each player’s container a flex row: table + total on right */
     .player-container {
-      min-width: 200px;
-      max-width: 95vw;
+      display: flex;
+      align-items: stretch;
+      margin-bottom: 50px;
+      max-width: 1250px;
+      width: 100%;
     }
-  }
 
-  /* On smaller screens (mobile) */
-  @media (max-width: 600px) {
-  /* Hide the frame header row completely */
-  table tr:nth-child(2) { /* The frame headers are the 2nd row */
-    display: none;
-  }
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      background-color: #1c1c1c;
+      color: #e0e0e0;
+      box-shadow: none;
+      width: 100%;
+      min-width: 880px;
+      table-layout: fixed;
+      border-radius: 16px 0 0 16px;
+      overflow: hidden;
+      user-select: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-  /* Shrink total container font size */
-  .total-container {
-    font-size: 0.8rem;
-    padding: 4px 8px;
-    min-width: 60px; /* or whatever fits better */
-  }
+    th, td {
+      border-left: 1.5px solid #333333;
+      border-top: 1.5px solid #333333;
+      padding: 8px 0;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
 
-  /* Shrink frame font size in table headers and cells */
-  table th, table td {
-    font-size: 0.7rem;
-    padding: 2px 4px;
-  }
+    th:first-child, td:first-child {
+      border-left: none;
+    }
+    tr:first-child th, tr:first-child td {
+      border-top: none;
+    }
 
-  /* Optional: make the entire table smaller on mobile */
-  table {
-    font-size: 0.7rem;
-  }
-}
+    th {
+      background-color: #2e2e2e;
+      color: #c8c8c8;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+    }
 
+    input {
+      width: 100%;
+      background-color: transparent;
+      color: #f0f0f0;
+      border: none;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      user-select: none;
+      cursor: default;
+      letter-spacing: 1px;
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+    input:focus {
+      outline: none;
+    }
 
-  th, td {
-    border-left: 1.5px solid #333333;
-    border-top: 1.5px solid #333333;
-    padding: 8px 0;
-    text-align: center;
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
+    input[value="X"] {
+      color: #88cc88;
+      font-weight: 900;
+    }
+    input[value="/"] {
+      color: #a0a0a0;
+      font-weight: 800;
+    }
 
-  th:first-child, td:first-child {
-    border-left: none;
-  }
-
-  tr:first-child th, tr:first-child td {
-    border-top: none;
-  }
-
-  th {
-    background-color: #2e2e2e;
-    color: #c8c8c8;
-    letter-spacing: 1.2px;
-    font-weight: 700;
-  }
-
-  input {
-    width: 100%;
-    background-color: transparent;
-    color: #f0f0f0;
-    border: none;
-    text-align: center;
-    font-size: 1.3rem;
-    font-weight: 700;
-    user-select: none;
-    cursor: default;
-    letter-spacing: 1px;
-    transition: color 0.3s ease, background-color 0.3s ease;
-  }
-
-  input:focus {
-    outline: none;
-  }
-
-  input[value="X"] {
-    color: #88cc88;
-    font-weight: 900;
-  }
-
-  input[value="/"] {
-    color: #a0a0a0;
-    font-weight: 800;
-  }
-
-  .total-container {
-    width: 80px;
-    background: #121212;
-    color: #e0e0e0;
-    font-weight: 900;
-    font-size: 1.8rem;
-    border-radius: 0 16px 16px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 12px;
-    user-select: none;
-    box-shadow: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  /* Mobile styles */
-  @media (max-width: 600px) {
+    /* Total displayed in a separate vertical panel on right */
     .total-container {
-      font-size: 1rem;
-      width: 60px;
-      padding: 0 6px;
-      border-radius: 0 12px 12px 0;
+      width: 120px;
+      background: #121212;
+      color: #e0e0e0; /* light grey same as body */
+      font-weight: 900;
+      font-size: 1.8rem;
+      border-radius: 0 16px 16px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      user-select: none;
+      box-shadow: none; /* remove green glow */
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-  }
 
+    /* When active player */
+    .player-container.active .total-container {
+      background-color: #ffffff;
+      color: #000000;
+      box-shadow: none; /* no glow on active either */
+    }
 
-  .player-container.active .total-container {
-    background-color: #ffffff;
-    color: #000000;
-    box-shadow: none;
-  }
+    /* Highlight active player's table and total */
+    table.active {
+      background-color: #ffffff;
+      color: #000000;
+      box-shadow: none;
+    }
 
-  table.active {
-    background-color: #ffffff;
-    color: #000000;
-    box-shadow: none;
-  }
+    table.active th,
+    table.active td,
+    table.active input {
+      color: #000000 !important;
+      background-color: #ffffff !important;
+    }
 
-  table.active th,
-  table.active td,
-  table.active input {
-    color: #000000 !important;
-    background-color: #ffffff !important;
-  }
+    .player-container.active table.active {
+      /* extra safety to ensure highlight */
+      background-color: #fff;
+      color: #000;
+      box-shadow: none;
+    }
 
-  .player-container.active table.active {
-    background-color: #fff;
-    color: #000;
-    box-shadow: none;
-  }
+    /* Scrollbar for scorecards */
+    #scorecards::-webkit-scrollbar {
+      height: 8px;
+    }
+    #scorecards::-webkit-scrollbar-thumb {
+      background: #555555;
+      border-radius: 12px;
+    }
+    #scorecards::-webkit-scrollbar-track {
+      background: #121212;
+    }
 
-  #scorecards::-webkit-scrollbar {
-    height: 8px;
-  }
+    #connection-status {
+      margin-top: 20px;
+      font-family: monospace;
+      color: #ccc;
+      user-select: none;
+    }
 
-  #scorecards::-webkit-scrollbar-thumb {
-    background: #555555;
-    border-radius: 12px;
-  }
+    #my-id {
+      margin-top: 8px;
+      font-family: monospace;
+      font-weight: 700;
+      color: #ddd;
+      user-select: text;
+      background: #222;
+      padding: 6px 12px;
+      border-radius: 8px;
+      max-width: 160px;
+      overflow-wrap: break-word;
+      cursor: default;
+    }
 
-  #scorecards::-webkit-scrollbar-track {
-    background: #121212;
-  }
+    #connect-section {
+      margin-top: 15px;
+      user-select: none;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-  #connection-status {
-    margin-top: 20px;
-    font-family: monospace;
-    color: #ccc;
-    user-select: none;
-  }
+    #connect-section input[type="text"] {
+      width: 130px;
+      font-size: 1rem;
+      padding: 6px 10px;
+      border-radius: 10px;
+    }
 
-  #my-id {
-    margin-top: 8px;
-    font-family: monospace;
-    font-weight: 700;
-    color: #ddd;
-    user-select: text;
-    background: #222;
-    padding: 6px 12px;
-    border-radius: 8px;
-    max-width: 160px;
-    overflow-wrap: break-word;
-    cursor: default;
-  }
-
-  #connect-section {
-    margin-top: 15px;
-    user-select: none;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  #connect-section input[type="text"] {
-    width: 130px;
-    font-size: 1rem;
-    padding: 6px 10px;
-    border-radius: 10px;
-  }
-
-  #connect-section button {
-    padding: 8px 14px;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 12px;
-    user-select: none;
-  }
-</style>
-
+    #connect-section button {
+      padding: 8px 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 12px;
+      user-select: none;
+    }
+  </style>
 </head>
 <body>
   <h1>FrameShare</h1>
@@ -417,8 +322,7 @@
   </label>
 
 
-  <div id="scorecards" class="player-scroll"></div>
-
+  <div id="scorecards"></div>
 
   <div id="connection-status">Connecting to PeerJS server...</div>
   <div id="my-id">Your ID: ...</div>
