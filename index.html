@@ -134,69 +134,79 @@
     padding-bottom: 10px;
   }
 
-  /* NEW wrapper for horizontal scroll */
-      /* Responsive horizontal scroll container */
-    .player-scroll {
-      overflow-x: auto;
-      display: flex;
-      gap: 12px;
-      scroll-snap-type: x mandatory;
-      background: #111;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 100vw;
-      padding: 10px;
-      box-sizing: border-box;
-    }
+  .player-scroll {
+  overflow-x: auto;
+  display: flex;
+  gap: 12px;
+  scroll-snap-type: x mandatory;
+  background: #111;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 100vw;
+  padding: 10px;
+  box-sizing: border-box;
+}
 
-    /* Player container inside scroll */
+  .player-container {
+    flex: 0 0 auto;
+    min-width: 260px; /* reduced from 300 */
+    max-width: 90vw;  /* allow container to shrink on mobile */
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    background: rgba(34, 34, 34, 0.8); /* translucent box, adjust opacity */
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+    box-sizing: border-box;
+    overflow: hidden; /* prevent content overflow */
+  }
+
+  table {
+    background: #000;
+    border-collapse: collapse;
+    color: white;
+    width: 100%; /* full width of container */
+    table-layout: fixed; /* force fixed layout for responsive */
+  }
+
+  table th,
+  table td {
+    padding: 2px 4px;
+    text-align: center;
+    word-wrap: break-word;
+  }
+
+  table input {
+    width: 100%;  /* fill cell */
+    max-width: 30px;
+    text-align: center;
+    background: #000;
+    color: white;
+    border: none;
+    font-weight: bold;
+    box-sizing: border-box;
+    padding: 2px;
+  }
+
+  .total-container {
+    font-size: 1.2em;
+    font-weight: bold;
+    white-space: nowrap;
+    padding-left: 10px;
+    flex-shrink: 0; /* don’t shrink */
+  }
+
+  /* Optional: smaller min-width on very small devices */
+  @media (max-width: 480px) {
     .player-container {
-      flex: 0 0 auto;
-      min-width: 300px;
-      max-width: 100%;
-      scroll-snap-align: start;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 12px;
-      background: #222;
-      padding: 10px;
-      border-radius: 8px;
-      color: white;
-      box-sizing: border-box;
+      min-width: 200px;
+      max-width: 95vw;
     }
+  }
 
-    /* Highlight active player */
-    .player-container.active {
-      background: #333;
-      outline: 2px solid #888;
-    }
-
-    /* Scorecard table style */
-    table {
-      background: #000;
-      border-collapse: collapse;
-      color: white;
-      width: 100%;
-    }
-
-    /* Inputs inside scorecard cells */
-    table input {
-      width: 30px;
-      text-align: center;
-      background: #000;
-      color: white;
-      border: none;
-      font-weight: bold;
-    }
-
-    /* Total score container */
-    .total-container {
-      font-size: 1.2em;
-      font-weight: bold;
-      white-space: nowrap;
-      padding-left: 10px;
-    }
 
   th, td {
     border-left: 1.5px solid #333333;
@@ -362,9 +372,7 @@
   </label>
 
 
-  <div class="player-scroll">
-    <div id="scorecards"></div>
-  </div>
+  <div id="scorecards" class="player-scroll"></div>
 
 
   <div id="connection-status">Connecting to PeerJS server...</div>
