@@ -12,312 +12,315 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>FrameShare</title></title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-      html {
-      min-height: calc(100% + env(safe-area-inset-top));
-      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-      background-attachment: fixed;
-      background-image: url('/bg.svg');
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
+  html {
+    min-height: calc(100% + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    background-attachment: fixed;
+    background-image: url('/bg.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 
-    .left-sidebar {
-     padding: env(safe-area-inset-top) 0 0 env(safe-area-inset-left);
-    }
+  .left-sidebar {
+    padding: env(safe-area-inset-top) 0 0 env(safe-area-inset-left);
+  }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden; /* Prevent scrolling */
-      height: 100%;
-      touch-action: none; /* Disable gestures */
-      overscroll-behavior: none; /* Prevent pull-to-refresh on mobile */
-      -webkit-overflow-scrolling: auto;
-    }
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    touch-action: none;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: auto;
+  }
 
-    body {
-      background: #121212;
-      color: #e0e0e0;
-      font-family: 'Share Tech Mono', monospace;
-      padding: 5px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: fixed; /* Prevent resizing */
-      width: 100vw;
-      height: 100vh;
-      box-sizing: border-box;
-    }
+  body {
+    background: #121212;
+    color: #e0e0e0;
+    font-family: 'Share Tech Mono', monospace;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+  }
 
-    /* ... everything else stays unchanged ... */
+  body {
+    background: #121212;
+    color: #e0e0e0;
+    font-family: 'Share Tech Mono', monospace;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+  }
 
-    body {
-      background: #121212; /* Very dark charcoal */
-      color: #e0e0e0; /* Light grey text */
-      font-family: 'Share Tech Mono', monospace;
-      padding: 5px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 5px;
+    font-weight: 700;
+    color: #f5f5f5;
+    user-select: none;
+    letter-spacing: 2px;
+  }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 5px;
-      font-weight: 700;
-      color: #f5f5f5;
-      user-select: none;
-      letter-spacing: 2px;
-    }
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    color: #bbbbbb;
+    user-select: none;
+  }
 
-    p {
-      font-size: 1.1rem;
-      margin-bottom: 25px;
-      color: #bbbbbb;
-      user-select: none;
-    }
+  label {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 40px;
+    user-select: none;
+  }
 
-    label {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      margin-bottom: 40px;
-      user-select: none;
-    }
+  input[type="text"] {
+    font-size: 1.3rem;
+    padding: 5px 10px;
+    border-radius: 14px;
+    border: 2px solid #666666;
+    background: #1e1e1e;
+    color: #ddd;
+    outline-offset: 3px;
+    width: 220px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 0 5px #000000cc;
+  }
 
-    input[type="text"] {
-      font-size: 1.3rem;
-      padding: 5px 10px;
-      border-radius: 14px;
-      border: 2px solid #666666;
-      background: #1e1e1e;
-      color: #ddd;
-      outline-offset: 3px;
-      width: 220px;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: inset 0 0 5px #000000cc;
-    }
-    input[type="text"]:focus {
-      border-color: #555555;
-      box-shadow: none;
-      background: #272727;
-      color: #fff;
-    }
+  input[type="text"]:focus {
+    border-color: #555555;
+    box-shadow: none;
+    background: #272727;
+    color: #fff;
+  }
 
-    button {
-      font-family: 'Share Tech Mono', monospace;
-      font-weight: 700;
-      font-size: 1.25rem;
-      padding: 5px 12px;
-      border-radius: 16px;
-      border: none;
-      cursor: pointer;
-      background: #444444;
-      color: #eee;
-      box-shadow: none;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: #666666;
-      color: #fff;
-    }
+  button {
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 700;
+    font-size: 1.25rem;
+    padding: 5px 12px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    background: #444444;
+    color: #eee;
+    box-shadow: none;
+    transition: background 0.3s ease;
+  }
 
-    #scorecards {
-      width: 100%;
-      max-width: 1250px;
-      overflow-x: auto;
-      padding-bottom: 10px;
-    }
+  button:hover {
+    background: #666666;
+    color: #fff;
+  }
 
-    .player-container {
-      display: flex;
-      align-items: stretch;
-      margin-bottom: 50px;
-      width: 100%;
-      max-width: 100vw;
-      overflow-x: auto;
-      box-sizing: border-box;
-      padding: 0 12px;
-    }
+  #scorecards {
+    width: 100%;
+    max-width: 1250px;
+    padding-bottom: 10px;
+  }
 
+  /* NEW wrapper for horizontal scroll */
+  .player-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 
-    table {
-      border-collapse: separate;
-      border-spacing: 0;
-      background-color: #1c1c1c;
-      color: #e0e0e0;
-      box-shadow: none;
-      width: 100%;
-      max-width: 100%;
-      min-width: 880px;
-      table-layout: fixed;
-      border-radius: 16px 0 0 16px;
-      overflow-x: auto;
-      overflow: hidden;
-      user-select: none;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
+  .player-container {
+    display: flex;
+    align-items: stretch;
+    margin-bottom: 50px;
+    width: fit-content;
+    min-width: 880px;
+    box-sizing: border-box;
+    padding: 0 12px;
+  }
 
-    
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #1c1c1c;
+    color: #e0e0e0;
+    box-shadow: none;
+    width: auto;
+    max-width: none;
+    min-width: 880px;
+    table-layout: fixed;
+    border-radius: 16px 0 0 16px;
+    overflow-x: auto;
+    overflow: hidden;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-    th, td {
-      border-left: 1.5px solid #333333;
-      border-top: 1.5px solid #333333;
-      padding: 8px 0;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
+  th, td {
+    border-left: 1.5px solid #333333;
+    border-top: 1.5px solid #333333;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
 
-    th:first-child, td:first-child {
-      border-left: none;
-    }
-    tr:first-child th, tr:first-child td {
-      border-top: none;
-    }
+  th:first-child, td:first-child {
+    border-left: none;
+  }
 
-    th {
-      background-color: #2e2e2e;
-      color: #c8c8c8;
-      letter-spacing: 1.2px;
-      font-weight: 700;
-    }
+  tr:first-child th, tr:first-child td {
+    border-top: none;
+  }
 
-    input {
-      width: 100%;
-      background-color: transparent;
-      color: #f0f0f0;
-      border: none;
-      text-align: center;
-      font-size: 1.3rem;
-      font-weight: 700;
-      user-select: none;
-      cursor: default;
-      letter-spacing: 1px;
-      transition: color 0.3s ease, background-color 0.3s ease;
-    }
-    input:focus {
-      outline: none;
-    }
+  th {
+    background-color: #2e2e2e;
+    color: #c8c8c8;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+  }
 
-    input[value="X"] {
-      color: #88cc88;
-      font-weight: 900;
-    }
-    input[value="/"] {
-      color: #a0a0a0;
-      font-weight: 800;
-    }
+  input {
+    width: 100%;
+    background-color: transparent;
+    color: #f0f0f0;
+    border: none;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    user-select: none;
+    cursor: default;
+    letter-spacing: 1px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
 
-    /* Total displayed in a separate vertical panel on right */
-    .total-container {
-      width: 120px;
-      background: #121212;
-      color: #e0e0e0; /* light grey same as body */
-      font-weight: 900;
-      font-size: 1.8rem;
-      border-radius: 0 16px 16px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 12px;
-      user-select: none;
-      box-shadow: none; /* remove green glow */
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
+  input:focus {
+    outline: none;
+  }
 
-    /* When active player */
-    .player-container.active .total-container {
-      background-color: #ffffff;
-      color: #000000;
-      box-shadow: none; /* no glow on active either */
-    }
+  input[value="X"] {
+    color: #88cc88;
+    font-weight: 900;
+  }
 
-    /* Highlight active player's table and total */
-    table.active {
-      background-color: #ffffff;
-      color: #000000;
-      box-shadow: none;
-    }
+  input[value="/"] {
+    color: #a0a0a0;
+    font-weight: 800;
+  }
 
-    table.active th,
-    table.active td,
-    table.active input {
-      color: #000000 !important;
-      background-color: #ffffff !important;
-    }
+  .total-container {
+    width: 120px;
+    background: #121212;
+    color: #e0e0e0;
+    font-weight: 900;
+    font-size: 1.8rem;
+    border-radius: 0 16px 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    user-select: none;
+    box-shadow: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-    .player-container.active table.active {
-      /* extra safety to ensure highlight */
-      background-color: #fff;
-      color: #000;
-      box-shadow: none;
-    }
+  .player-container.active .total-container {
+    background-color: #ffffff;
+    color: #000000;
+    box-shadow: none;
+  }
 
-    /* Scrollbar for scorecards */
-    #scorecards::-webkit-scrollbar {
-      height: 8px;
-    }
-    #scorecards::-webkit-scrollbar-thumb {
-      background: #555555;
-      border-radius: 12px;
-    }
-    #scorecards::-webkit-scrollbar-track {
-      background: #121212;
-    }
+  table.active {
+    background-color: #ffffff;
+    color: #000000;
+    box-shadow: none;
+  }
 
-    #connection-status {
-      margin-top: 20px;
-      font-family: monospace;
-      color: #ccc;
-      user-select: none;
-    }
+  table.active th,
+  table.active td,
+  table.active input {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+  }
 
-    #my-id {
-      margin-top: 8px;
-      font-family: monospace;
-      font-weight: 700;
-      color: #ddd;
-      user-select: text;
-      background: #222;
-      padding: 6px 12px;
-      border-radius: 8px;
-      max-width: 160px;
-      overflow-wrap: break-word;
-      cursor: default;
-    }
+  .player-container.active table.active {
+    background-color: #fff;
+    color: #000;
+    box-shadow: none;
+  }
 
-    #connect-section {
-      margin-top: 15px;
-      user-select: none;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+  #scorecards::-webkit-scrollbar {
+    height: 8px;
+  }
 
-    #connect-section input[type="text"] {
-      width: 130px;
-      font-size: 1rem;
-      padding: 6px 10px;
-      border-radius: 10px;
-    }
+  #scorecards::-webkit-scrollbar-thumb {
+    background: #555555;
+    border-radius: 12px;
+  }
 
-    #connect-section button {
-      padding: 8px 14px;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 12px;
-      user-select: none;
-    }
-  </style>
+  #scorecards::-webkit-scrollbar-track {
+    background: #121212;
+  }
+
+  #connection-status {
+    margin-top: 20px;
+    font-family: monospace;
+    color: #ccc;
+    user-select: none;
+  }
+
+  #my-id {
+    margin-top: 8px;
+    font-family: monospace;
+    font-weight: 700;
+    color: #ddd;
+    user-select: text;
+    background: #222;
+    padding: 6px 12px;
+    border-radius: 8px;
+    max-width: 160px;
+    overflow-wrap: break-word;
+    cursor: default;
+  }
+
+  #connect-section {
+    margin-top: 15px;
+    user-select: none;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #connect-section input[type="text"] {
+    width: 130px;
+    font-size: 1rem;
+    padding: 6px 10px;
+    border-radius: 10px;
+  }
+
+  #connect-section button {
+    padding: 8px 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    user-select: none;
+  }
+</style>
+
 </head>
 <body>
   <h1>FrameShare</h1>
