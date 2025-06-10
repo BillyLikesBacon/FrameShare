@@ -211,6 +211,32 @@
     }
   }
 
+  /* On smaller screens (mobile) */
+  @media (max-width: 600px) {
+  /* Hide the frame header row completely */
+  table tr:nth-child(2) { /* The frame headers are the 2nd row */
+    display: none;
+  }
+
+  /* Shrink total container font size */
+  .total-container {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    min-width: 60px; /* or whatever fits better */
+  }
+
+  /* Shrink frame font size in table headers and cells */
+  table th, table td {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+
+  /* Optional: make the entire table smaller on mobile */
+  table {
+    font-size: 0.7rem;
+  }
+}
+
 
   th, td {
     border-left: 1.5px solid #333333;
