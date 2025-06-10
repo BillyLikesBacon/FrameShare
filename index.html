@@ -129,11 +129,15 @@
     }
 
     #scorecards {
-      width: 100%;
-      max-width: 1250px;
+      width: 100vw;
+      max-width: 100vw;
+      height: calc(100vh - 180px); /* adjust based on how much header/UI space you have */
       overflow-x: auto;
+      overflow-y: auto;
       padding-bottom: 10px;
+      box-sizing: border-box;
     }
+
 
     /* Make each player’s container a flex row: table + total on right */
     .player-container {
