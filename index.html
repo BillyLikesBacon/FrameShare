@@ -135,38 +135,68 @@
   }
 
   /* NEW wrapper for horizontal scroll */
-  .player-scroll {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
+      /* Responsive horizontal scroll container */
+    .player-scroll {
+      overflow-x: auto;
+      display: flex;
+      gap: 12px;
+      scroll-snap-type: x mandatory;
+      background: #111;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 100vw;
+      padding: 10px;
+      box-sizing: border-box;
+    }
 
-  .player-container {
-    display: flex;
-    align-items: stretch;
-    margin-bottom: 50px;
-    width: fit-content;
-    min-width: 880px;
-    box-sizing: border-box;
-    padding: 0 12px;
-  }
+    /* Player container inside scroll */
+    .player-container {
+      flex: 0 0 auto;
+      min-width: 300px;
+      max-width: 100%;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+      color: white;
+      box-sizing: border-box;
+    }
 
-  table {
-    border-collapse: separate;
-    border-spacing: 0;
-    background-color: #1c1c1c;
-    color: #e0e0e0;
-    box-shadow: none;
-    width: auto;
-    max-width: none;
-    min-width: 880px;
-    table-layout: fixed;
-    border-radius: 16px 0 0 16px;
-    overflow-x: auto;
-    overflow: hidden;
-    user-select: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+    /* Highlight active player */
+    .player-container.active {
+      background: #333;
+      outline: 2px solid #888;
+    }
+
+    /* Scorecard table style */
+    table {
+      background: #000;
+      border-collapse: collapse;
+      color: white;
+      width: 100%;
+    }
+
+    /* Inputs inside scorecard cells */
+    table input {
+      width: 30px;
+      text-align: center;
+      background: #000;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+
+    /* Total score container */
+    .total-container {
+      font-size: 1.2em;
+      font-weight: bold;
+      white-space: nowrap;
+      padding-left: 10px;
+    }
 
   th, td {
     border-left: 1.5px solid #333333;
