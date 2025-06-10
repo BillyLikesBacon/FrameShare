@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" >
 <head>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#ffffff" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -9,6 +11,32 @@
   <title>FrameShare</title></title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scrolling */
+      height: 100%;
+      touch-action: none; /* Disable gestures */
+      overscroll-behavior: none; /* Prevent pull-to-refresh on mobile */
+      -webkit-overflow-scrolling: auto;
+    }
+
+    body {
+      background: #121212;
+      color: #e0e0e0;
+      font-family: 'Share Tech Mono', monospace;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: fixed; /* Prevent resizing */
+      width: 100vw;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* ... everything else stays unchanged ... */
 
     body {
       background: #121212; /* Very dark charcoal */
