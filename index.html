@@ -306,6 +306,17 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
+  /* Mobile adjustments */
+  @media (max-width: 600px) {
+    .total-container {
+      font-size: 1rem;
+      width: 80px;
+      padding: 0 8px;
+      border-radius: 0 12px 12px 0;
+    }
+  }
+
+
   .player-container.active .total-container {
     background-color: #ffffff;
     color: #000000;
