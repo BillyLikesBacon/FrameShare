@@ -310,7 +310,23 @@
       border-radius: 12px;
       user-select: none;
     }
-  </style>
+  
+#mobile-buttons button {
+  font-size: 1.2rem;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #333;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  font-family: 'Share Tech Mono', monospace;
+  cursor: pointer;
+}
+#mobile-buttons button:hover {
+  background: #555;
+}
+
+</style>
 </head>
 <body>
   <h1>FrameShare</h1>
@@ -706,6 +722,40 @@ function loadState(state) {
   }
   currentPlayerIndex = state.currentPlayerIndex || 0;
   updateCurrentPlayerHighlight();
+}
+</script>
+
+<!-- Mobile Buttons (shown only on mobile) -->
+<div id="mobile-buttons" style="display: none; position: fixed; bottom: 10px; left: 0; right: 0; z-index: 999; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 10px;">
+  <button onclick="simulateKey('1')">1</button>
+  <button onclick="simulateKey('2')">2</button>
+  <button onclick="simulateKey('3')">3</button>
+  <button onclick="simulateKey('4')">4</button>
+  <button onclick="simulateKey('5')">5</button>
+  <button onclick="simulateKey('6')">6</button>
+  <button onclick="simulateKey('7')">7</button>
+  <button onclick="simulateKey('8')">8</button>
+  <button onclick="simulateKey('9')">9</button>
+  <button onclick="simulateKey('0')">0</button>
+  <button onclick="simulateKey('X')">X</button>
+  <button onclick="simulateKey('/')">/</button>
+</div>
+
+<script>
+function isMobileDevice() {
+  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+if (isMobileDevice()) {
+  document.getElementById('mobile-buttons').style.display = 'flex';
+}
+
+function simulateKey(key) {
+  const event = new KeyboardEvent('keydown', {
+    key: key,
+    bubbles: true
+  });
+  window.dispatchEvent(event);
 }
 </script>
 </body>
