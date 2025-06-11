@@ -454,7 +454,7 @@ class BowlingGame {
     for (let i = 1; i <= 10; i++) {
       const th = document.createElement('th');
       th.colSpan = i === 10 ? 3 : 2;
-      th.textContent = `${i}`;
+      th.textContent = `Frame ${i}`;
       framesRow.appendChild(th);
     }
     this.table.appendChild(framesRow);
