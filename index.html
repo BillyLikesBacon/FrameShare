@@ -849,56 +849,36 @@ function simulateKey(key) {
   window.dispatchEvent(event);
 }
 
+<script>
 function checkGameFinished() {
   if (players.length > 0 && players.every(p => p.finished)) {
-    showFinishScreen();
+    const results = players
+      .map(p => ({ name: p.name, score: p.score() }))
+      .sort((a, b) => b.score - a.score());
+
+    let message = "🎳 Final Scores:\n\n";
+    results.forEach(p => {
+      message += `${p.name}: ${p.score}\n`;
+    });
+
+    if (results.length > 1) {
+      message += `\n🏆 Winner: ${results[0].name}`;
+    }
+
+    alert(message);
   }
 }
-
-function showFinishScreen() {
-  const finishScreen = document.getElementById('finish-screen');
-  const finalScoresDiv = document.getElementById('final-scores');
-
-  // Sort players by score descending
-  const sorted = players.slice().sort((a, b) => b.score() - a.score());
-  let html = '<table style="margin:auto; border-collapse:collapse;">';
-  html += '<tr><th style="padding:8px 16px;">Player</th><th style="padding:8px 16px;">Score</th></tr>';
-  sorted.forEach(p => {
-    html += `<tr><td style="padding:8px 16px;">${p.name}</td><td style="padding:8px 16px;">${p.score()}</td></tr>`;
-  });
-  html += '</table>';
-
-  if (sorted.length > 1) {
-    html += `<div style="margin-top:18px; font-size:1.5rem; font-weight:700;">Winner: ${sorted[0].name}</div>`;
-  }
-
-  finalScoresDiv.innerHTML = html;
-  finishScreen.style.display = 'flex';
-}
-
-document.getElementById('restart-btn').onclick = function() {
-  window.location.reload();
-};
 
 // Patch: call checkGameFinished after each throw
-const origAddThrow = BowlingGame.prototype.addThrow;
+const originalAddThrow = BowlingGame.prototype.addThrow;
 BowlingGame.prototype.addThrow = function(pins) {
-  const result = origAddThrow.call(this, pins);
+  const result = originalAddThrow.call(this, pins);
   if (result) {
-    setTimeout(checkGameFinished, 100); // slight delay so UI updates first
+    setTimeout(checkGameFinished, 100); // Let UI update before checking
   }
   return result;
 };
 
 </script>
-
-<!-- Finish Screen Overlay -->
-<div id="finish-screen" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(18,18,18,0.97); z-index:2000; color:#fff; font-family:'Share Tech Mono',monospace; align-items:center; justify-content:center; flex-direction:column;">
-  <h2 style="font-size:2.5rem; margin-bottom:20px;">Game Over!</h2>
-  <div id="final-scores" style="font-size:1.3rem; margin-bottom:30px;"></div>
-  <button id="restart-btn" style="font-size:1.2rem; padding:10px 24px; border-radius:12px; background:#444; color:#fff; border:none; font-weight:bold; cursor:pointer;">Restart</button>
-</div>
-
-
 </body>
 </html>
