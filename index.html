@@ -869,15 +869,39 @@ function checkGameFinished() {
   }
 }
 
-// Patch: call checkGameFinished after each throw
-const originalAddThrow = BowlingGame.prototype.addThrow;
-BowlingGame.prototype.addThrow = function(pins) {
-  const result = originalAddThrow.call(this, pins);
-  if (result) {
-    setTimeout(checkGameFinished, 100); // Let UI update before checking
+window.addEventListener('keydown', (e) => {
+  if (players.length === 0) return;
+  const key = e.key.toUpperCase();
+  if (!['0','1','2','3','4','5','6','7','8','9','X','/'].includes(key)) return;
+
+  const player = players[currentPlayerIndex];
+
+  let pins;
+  if (key === 'X') pins = 10;
+  else if (key === '/') {
+    const prevThrow = player.throws[player.currentThrow - 1] || 0;
+    pins = 10 - prevThrow;
+  } else {
+    pins = parseInt(key);
   }
-  return result;
-};
+
+  const added = player.addThrow(pins);
+  if (!added) return;
+
+  player.updateUI();
+
+  if (player.ballInFrame === 0 || player.finished) {
+    currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+    updateCurrentPlayerHighlight();
+  }
+
+  checkGameFinished(); // ✅ Call here after a successful throw
+
+  sendState();
+
+  e.preventDefault();
+});
+</script>
 
 </script>
 </body>
