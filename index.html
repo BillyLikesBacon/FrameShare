@@ -404,9 +404,64 @@ td input {
   display: block;
 }
 
+  /* Finish screen styles */
+  #finish-screen {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(18, 18, 18, 0.95);
+    color: #e0e0e0;
+    font-family: 'Share Tech Mono', monospace;
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+    text-align: center;
+    user-select: none;
+  }
+
+  #finish-screen h1 {
+    font-size: 4rem;
+    color: #f5f5f5;
+    margin-bottom: 0.2em;
+  }
+
+  #finish-screen p {
+    font-size: 1.3rem;
+    color: #bbbbbb;
+    margin-bottom: 2em;
+  }
+
+  #close-finish-screen {
+    font-family: 'Share Tech Mono', monospace;
+    font-weight: 700;
+    font-size: 1.25rem;
+    padding: 10px 20px;
+    border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    background: #444444;
+    color: #eee;
+    transition: background 0.3s ease;
+  }
+
+  #close-finish-screen:hover {
+    background: #666666;
+  }
+
 </style>
 </head>
 <body>
+
+<!-- Finish Screen Overlay -->
+<div id="finish-screen">
+  <h1>🎉 Game Over! 🎉</h1>
+  <p>All players have finished. Thanks for playing!</p>
+  <button id="close-finish-screen">Restart</button>
+</div>
+
 <h1>FrameShare</h1>
 <button id="toggle-ui-btn" style="margin-bottom: 10px;">Hide UI</button>
 <p>Type pins (0-9), 'X' for strike, '/' for spare. Players alternate turns each frame.</p>
@@ -423,13 +478,6 @@ td input {
 <button id="connect-btn">Connect</button>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js">
-function checkIfAllPlayersFinished() {
-  if (players.length && players.every(p => p.finished)) {
-    console.log("🎳 All players are done!");
-    alert("🎳 All players are done");
-  }
-}
-
 </script>
 <script>
 class BowlingGame {
@@ -588,6 +636,7 @@ class BowlingGame {
       if (frame < 9) {
         if (this.throws[i] === 10) {
           display.push('X', '');
+          console.log(frame);
           i += 1;
         } else {
           const first = this.throws[i];
@@ -910,9 +959,44 @@ BowlingGame.prototype.addThrow = function(pins) {
 function checkIfAllPlayersFinished() {
   if (players.length && players.every(p => p.finished)) {
     console.log("🎳 All players are done!");
-    // Hook your end-of-game logic here
+    alert("🎳 All players are done");
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const finishScreen = document.getElementById('finish-screen');
+    const closeBtn = document.getElementById('close-finish-screen');
+
+    // Hide finish screen on load just in case
+    finishScreen.style.display = 'none';
+
+    closeBtn.addEventListener('click', () => {
+      finishScreen.style.display = 'none';
+    });
+
+    window.showFinishScreen = function() {
+      finishScreen.style.display = 'flex';
+    }
+
+    window.hideFinishScreen = function() {
+      finishScreen.style.display = 'none';
+    }
+  });
+
+  // Your existing function, modified to call showFinishScreen()
+  function checkIfAllPlayersFinished() {
+    if (players.length && players.every(p => p.finished)) {
+      console.log("🎳 All players are done!");
+      document.getElementById('finish-screen').style.display = 'flex';
+      if (typeof showFinishScreen === "function") {
+        showFinishScreen();
+      }
+    }
+  }
+
+  document.getElementById('close-finish-screen').addEventListener('click', () => {
+    location.reload();
+  });
 
 </script>
 
