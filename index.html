@@ -422,7 +422,15 @@ td input {
 <input autocomplete="off" id="connect-to-id" placeholder="Enter peer ID" type="text"/>
 <button id="connect-btn">Connect</button>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js">
+function checkIfAllPlayersFinished() {
+  if (players.length && players.every(p => p.finished)) {
+    console.log("🎳 All players are done!");
+    alert("🎳 All players are done");
+  }
+}
+
+</script>
 <script>
 class BowlingGame {
   constructor(name) {
@@ -668,7 +676,6 @@ window.addEventListener('keydown', (e) => {
 
   const added = player.addThrow(pins);
   if (!added) {
-    
     return;
   }
 
@@ -680,6 +687,7 @@ window.addEventListener('keydown', (e) => {
   }
 
   sendState();
+  checkIfAllPlayersFinished();
 
   e.preventDefault();
 });
@@ -816,6 +824,14 @@ toggleBtn.addEventListener('click', () => {
   toggleBtn.textContent = uiHidden ? 'Show UI' : 'Hide UI';
 });
 
+
+function checkIfAllPlayersFinished() {
+  if (players.length && players.every(p => p.finished)) {
+    console.log("🎳 All players are done!");
+    alert("🎳 All players are done");
+  }
+}
+
 </script>
 <!-- Mobile Buttons (shown only on mobile) -->
 <div id="mobile-buttons" style="display: none; position: fixed; bottom: 10px; left: 0; right: 0; z-index: 999; display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 10px;">
@@ -890,15 +906,16 @@ BowlingGame.prototype.addThrow = function(pins) {
   return result;
 };
 
+
+function checkIfAllPlayersFinished() {
+  if (players.length && players.every(p => p.finished)) {
+    console.log("🎳 All players are done!");
+    // Hook your end-of-game logic here
+  }
+}
+
 </script>
 
 <!-- Finish Screen Overlay -->
-<div id="finish-screen" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(18,18,18,0.97); z-index:2000; color:#fff; font-family:'Share Tech Mono',monospace; align-items:center; justify-content:center; flex-direction:column;">
-  <h2 style="font-size:2.5rem; margin-bottom:20px;">Game Over!</h2>
-  <div id="final-scores" style="font-size:1.3rem; margin-bottom:30px;"></div>
-  <button id="restart-btn" style="font-size:1.2rem; padding:10px 24px; border-radius:12px; background:#444; color:#fff; border:none; font-weight:bold; cursor:pointer;">Restart</button>
-</div>
-
-
 </body>
 </html>
