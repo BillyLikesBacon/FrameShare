@@ -817,6 +817,21 @@ function setupConnectionHandlers(connection) {
 
 function sendState() {
   if (conn && conn.open) {
+    // Set the listener once (only if not already set)
+    if (!conn._hasDataListener) {
+      conn.on('data', (data) => {
+        if (data === 'finish') {
+          console.log("🎳 All players are done!");
+          document.getElementById('finish-screen').style.display = 'flex';
+          if (typeof showFinishScreenAndDisplay === 'function') {
+            showFinishScreenAndDisplay();
+          }
+        }
+      });
+      conn._hasDataListener = true;  // custom flag to avoid adding multiple listeners
+    }
+
+    // Send current state
     const state = {
       players: players.map(p => ({
         name: p.name,
@@ -828,9 +843,10 @@ function sendState() {
       })),
       currentPlayerIndex,
     };
-    conn.send({type: 'state', payload: state});
+    conn.send({ type: 'state', payload: state });
   }
 }
+
 
 function loadState(state) {
   // Remove all existing players UI
@@ -980,15 +996,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.hideFinishScreen = function() {
       finishScreen.style.display = 'none';
-    }
-  });
-
-      // Listen for incoming messages on the connection
-  conn.on('data', (data) => {
-    if (data === 'finish') {
-      console.log("🎳 All players are done!");
-      document.getElementById('finish-screen').style.display = 'flex';
-      showFinishScreenAndDisplay();
     }
   });
 
