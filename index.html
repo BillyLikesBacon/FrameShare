@@ -988,11 +988,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (players.length && players.every(p => p.finished)) {
       console.log("🎳 All players are done!");
       document.getElementById('finish-screen').style.display = 'flex';
+      conn.send('finish');
       if (typeof showFinishScreen === "function") {
         showFinishScreen();
       }
     }
   }
+
+    // Listen for incoming messages on the connection
+  conn.on('data', (data) => {
+    if (data === 'finish') {
+      console.log("🎳 All players are done!");
+      document.getElementById('finish-screen').style.display = 'flex';
+      showFinishScreenAndDisplay();
+    }
+  });
 
   document.getElementById('close-finish-screen').addEventListener('click', () => {
     location.reload();
