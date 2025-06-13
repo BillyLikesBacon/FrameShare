@@ -983,6 +983,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+      // Listen for incoming messages on the connection
+  conn.on('data', (data) => {
+    if (data === 'finish') {
+      console.log("🎳 All players are done!");
+      document.getElementById('finish-screen').style.display = 'flex';
+      showFinishScreenAndDisplay();
+    }
+  });
+
   // Your existing function, modified to call showFinishScreen()
   function checkIfAllPlayersFinished() {
     if (players.length && players.every(p => p.finished)) {
@@ -994,15 +1003,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
-
-    // Listen for incoming messages on the connection
-  conn.on('data', (data) => {
-    if (data === 'finish') {
-      console.log("🎳 All players are done!");
-      document.getElementById('finish-screen').style.display = 'flex';
-      showFinishScreenAndDisplay();
-    }
-  });
 
   document.getElementById('close-finish-screen').addEventListener('click', () => {
     location.reload();
