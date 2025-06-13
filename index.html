@@ -480,18 +480,6 @@ td input {
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js">
 </script>
 <script>
-
-function sendToPeer(data) {
-  if (peer && peer.open) {
-    peer.send(data);
-  }
-}
-
-
-let localFinished = false;
-let remoteFinished = false;
-
-
 class BowlingGame {
   constructor(name) {
     this.name = name;
@@ -999,10 +987,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkIfAllPlayersFinished() {
     if (players.length && players.every(p => p.finished)) {
       console.log("🎳 All players are done!");
-      if (data.type === 'finished') {
-      remoteFinished = true;
-      checkIfBothFinished();
-      }
       document.getElementById('finish-screen').style.display = 'flex';
       if (typeof showFinishScreen === "function") {
         showFinishScreen();
@@ -1013,13 +997,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('close-finish-screen').addEventListener('click', () => {
     location.reload();
   });
-
-  function checkIfBothFinished() {
-    if (localFinished && remoteFinished) {
-      showFinishScreen(); // Your existing function to show the screen
-    }
-  }
-
 
 </script>
 
