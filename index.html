@@ -459,7 +459,8 @@ td input {
 <div id="finish-screen">
   <h1>🎉 Game Over! 🎉</h1>
   <p>All players have finished. Thanks for playing!</p>
-  <button id="close-finish-screen">Restart</button>
+  <button id="close-finish-screen">Restart</button> 
+  <button id="export-pdf">Export as PDF</button>
 </div>
 
 <h1>FrameShare</h1>
@@ -478,6 +479,7 @@ td input {
 <button id="connect-btn">Connect</button>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </script>
 <script>
 class BowlingGame {
@@ -999,31 +1001,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Your existing function, modified to call showFinishScreen()
-  function checkIfAllPlayersFinished() {
-    if (players.length && players.every(p => p.finished)) {
-      console.log("🎳 All players are done!");
-      document.getElementById('finish-screen').style.display = 'flex';
-      conn.send('finish');
-      if (typeof showFinishScreen === "function") {
-        showFinishScreen();
-      }
+function checkIfAllPlayersFinished() {
+  if (players.length && players.every(p => p.finished)) {
+    console.log("🎳 All players are done!");
+    document.getElementById('finish-screen').style.display = 'flex';
+    const playerContainers = document.querySelectorAll('.player-container');
+    playerContainers.forEach(container => {
+      const clone = container.cloneNode(true);
+      clone.classList.add('active');
+      const table = clone.querySelector('table');
+      if (table) table.classList.add('active');
+      document.getElementById('finish-screen').appendChild(clone);
+    });
+    conn.send('finish');
+    if (typeof showFinishScreen === "function") {
+      showFinishScreen();
     }
   }
+}
 
-  // Function to show the finish screen and player containers
-  function showFinishScreen() {
-    document.getElementById('finish-screen').style.display = 'block';
-
-    const playerContainers = document.querySelectorAll('.player-container, .player-container.active');
-    playerContainers.forEach(el => {
-      el.style.display = 'block';  // Adjust as needed
-    });
-  }
 
   document.getElementById('close-finish-screen').addEventListener('click', () => {
     location.reload();
   });
+
+src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+
+document.getElementById('export-pdf').addEventListener('click', () => {
+  const finishScreen = document.getElementById('finish-screen');
+
+  // Create a container with only the player containers (avoid export button itself)
+  const exportContent = document.createElement('div');
+  exportContent.style.padding = '20px';
+  exportContent.style.backgroundColor = '#fff';
+  exportContent.style.color = '#000';
+
+  const playerContainers = finishScreen.querySelectorAll('.player-container');
+  playerContainers.forEach(container => {
+    const clone = container.cloneNode(true);
+    clone.style.marginBottom = '20px';
+    exportContent.appendChild(clone);
+  });
+
+  // Use html2pdf to export
+  html2pdf()
+    .from(exportContent)
+    .set({
+      margin: 10,
+      filename: 'bowling_scores.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    })
+    .save();
+});
+
+document.getElementById('export-pdf').addEventListener('click', () => {
+  // Select the whole body (or any specific container you want)
+  const element = document.body;
+
+  // Options for html2pdf
+  const opt = {
+    margin:       0.5,
+    filename:     'page-export.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  // Export the element as PDF
+  html2pdf().set(opt).from(element).save();
+});
+
 
 </script>
 
