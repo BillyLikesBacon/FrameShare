@@ -1011,6 +1011,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Function to show the finish screen and player containers
+  function showFinishScreen() {
+    document.getElementById('finish-screen').style.display = 'block';
+
+    const playerContainers = document.querySelectorAll('.player-container, .player-container.active');
+    playerContainers.forEach(el => {
+      el.style.display = 'block';  // Adjust as needed
+    });
+  }
+
   document.getElementById('close-finish-screen').addEventListener('click', () => {
     location.reload();
   });
