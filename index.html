@@ -404,52 +404,86 @@ td input {
   display: block;
 }
 
-  /* Finish screen styles */
-  #finish-screen {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(18, 18, 18, 0.95);
-    color: #e0e0e0;
-    font-family: 'Share Tech Mono', monospace;
-    /* display: flex; */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    padding: 20px;
-    text-align: center;
-    user-select: none;
-  }
+/* Finish screen styles */
+#finish-screen {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(18, 18, 18, 0.95);
+  color: #e0e0e0;
+  font-family: 'Share Tech Mono', monospace;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 9999;
+  padding: 10px;
+  text-align: center;
+  user-select: none;
+  overflow-y: scroll;
+}
 
-  #finish-screen h1 {
-    font-size: 4rem;
-    color: #f5f5f5;
-    margin-bottom: 0.2em;
-  }
+/* Sticky top bar for title and buttons */
+#finish-screen h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: #f5f5f5;
+  margin: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(18, 18, 18, 0.95);
+  padding: 10px;
+  border-radius: 18px;
+  line-height: 1.2;
+  word-break: break-word;
+}
 
-  #finish-screen p {
-    font-size: 1.3rem;
-    color: #bbbbbb;
-    margin-bottom: 2em;
-  }
+#finish-screen p {
+  font-size: 1.3rem;
+  color: #bbbbbb;
+  margin: 1em 0 2em;
+  position: sticky;
+  top: 65px;
+  z-index: 10;
+  background: rgba(18, 18, 18, 0.95);
+  padding: 6px;
+  border-radius: 14px;
+}
 
-  #close-finish-screen {
-    font-family: 'Share Tech Mono', monospace;
-    font-weight: 700;
-    font-size: 1.25rem;
-    padding: 10px 20px;
-    border-radius: 16px;
-    border: none;
-    cursor: pointer;
-    background: #444444;
-    color: #eee;
-    transition: background 0.3s ease;
-  }
+#close-finish-screen {
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 10px 20px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  background: #444444;
+  color: #eee;
+  transition: background 0.3s ease;
+}
 
-  #close-finish-screen:hover {
-    background: #666666;
-  }
+#close-finish-screen:hover {
+  background: #666666;
+}
+
+/* Export button shares same style */
+#export-pdf {
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 10px 20px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  background: #444444;
+  color: #eee;
+  transition: background 0.3s ease;
+}
+
+#export-pdf:hover {
+  background: #666666;
+}
+
 
 </style>
 </head>
@@ -457,11 +491,14 @@ td input {
 
 <!-- Finish Screen Overlay -->
 <div id="finish-screen">
-  <h1>🎉 Game Over! 🎉</h1>
+  <h1 style="font-size: 2.5rem; margin-bottom: 0.5em;">🎉 Game Over! 🎉</h1>
   <p>All players have finished. Thanks for playing!</p>
-  <button id="close-finish-screen">Restart</button> 
-  <button id="export-pdf">Export as PDF</button>
+  <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px;">
+    <button id="close-finish-screen">Restart</button> 
+    <button id="export-pdf">Export as PDF</button>
+  </div>
 </div>
+
 
 <h1>FrameShare</h1>
 <button id="toggle-ui-btn" style="margin-bottom: 10px;">Hide UI</button>
@@ -478,7 +515,7 @@ td input {
 <input autocomplete="off" id="connect-to-id" placeholder="Enter peer ID" type="text"/>
 <button id="connect-btn">Connect</button>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js">
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </script>
 <script>
@@ -530,7 +567,7 @@ class BowlingGame {
     // Create total container separately (on right)
     this.totalContainer = document.createElement('div');
     this.totalContainer.className = 'total-container';
-    this.totalContainer.textContent = 'Total: 0';
+    this.totalContainer.textContent = '0';
 
     // Append table and total container to player container
     this.playerContainer.appendChild(this.table);
@@ -675,7 +712,7 @@ class BowlingGame {
       input.value = displayScores[idx] || '';
     });
 
-    this.totalContainer.textContent = `Total: ${this.score()}`;
+    this.totalContainer.textContent = `${this.score()}`;
   }
 }
 
@@ -824,11 +861,24 @@ function sendState() {
       conn.on('data', (data) => {
         if (data === 'finish') {
           console.log("🎳 All players are done!");
-          document.getElementById('finish-screen').style.display = 'flex';
-          if (typeof showFinishScreenAndDisplay === 'function') {
-            showFinishScreenAndDisplay();
+          if (typeof showFinishScreen === "function") {
+            showFinishScreen();
           }
+
+          // Also append player containers to finish screen (mirror what the sender does)
+          const finishScreen = document.getElementById('finish-screen');
+          const playerContainers = document.querySelectorAll('.player-container');
+          playerContainers.forEach(container => {
+            const clone = container.cloneNode(true);
+            clone.classList.add('active');
+            const table = clone.querySelector('table');
+            if (table) table.classList.add('active');
+            finishScreen.appendChild(clone);
+          });
+          
+          finishScreen.style.display = 'flex';
         }
+
       });
       conn._hasDataListener = true;  // custom flag to avoid adding multiple listeners
     }
@@ -892,12 +942,6 @@ toggleBtn.addEventListener('click', () => {
 });
 
 
-function checkIfAllPlayersFinished() {
-  if (players.length && players.every(p => p.finished)) {
-    console.log("🎳 All players are done!");
-    alert("🎳 All players are done");
-  }
-}
 
 </script>
 <!-- Mobile Buttons (shown only on mobile) -->
@@ -974,12 +1018,6 @@ BowlingGame.prototype.addThrow = function(pins) {
 };
 
 
-function checkIfAllPlayersFinished() {
-  if (players.length && players.every(p => p.finished)) {
-    console.log("🎳 All players are done!");
-    alert("🎳 All players are done");
-  }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     const finishScreen = document.getElementById('finish-screen');
@@ -1021,12 +1059,6 @@ function checkIfAllPlayersFinished() {
 }
 
 
-  document.getElementById('close-finish-screen').addEventListener('click', () => {
-    location.reload();
-  });
-
-src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
-
 document.getElementById('export-pdf').addEventListener('click', () => {
   const finishScreen = document.getElementById('finish-screen');
 
@@ -1040,6 +1072,7 @@ document.getElementById('export-pdf').addEventListener('click', () => {
   playerContainers.forEach(container => {
     const clone = container.cloneNode(true);
     clone.style.marginBottom = '20px';
+    clone.style.border = '1px solid black'; // Added thin black border here
     exportContent.appendChild(clone);
   });
 
@@ -1056,26 +1089,8 @@ document.getElementById('export-pdf').addEventListener('click', () => {
     .save();
 });
 
-document.getElementById('export-pdf').addEventListener('click', () => {
-  // Select the whole body (or any specific container you want)
-  const element = document.body;
-
-  // Options for html2pdf
-  const opt = {
-    margin:       0.5,
-    filename:     'page-export.pdf',
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2 },
-    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-  };
-
-  // Export the element as PDF
-  html2pdf().set(opt).from(element).save();
-});
 
 
 </script>
-
-<!-- Finish Screen Overlay -->
 </body>
 </html>
