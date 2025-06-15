@@ -1084,7 +1084,11 @@ function checkIfAllPlayersFinished() {
     const filename = `bowling_scores_${formatted}.pdf`;
 
     // Upload to Supabase
-    const { data, error } = await supabase.storage.from('pdfs').upload(filename, blob);
+    const { data, error } = await supabase.storage
+      .from('pdfs')
+      .upload(filename, blob, { upsert: true });
+
+
 
     if (error) {
       console.error('Upload failed:', error);
