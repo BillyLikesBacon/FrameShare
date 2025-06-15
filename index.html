@@ -1071,7 +1071,7 @@ function checkIfAllPlayersFinished() {
 
 document.getElementById('export-pdf').addEventListener('click', () => {
   const finishScreen = document.getElementById('finish-screen');
-
+  console.log('Export button clicked');
   // Create a container with only the player containers (avoid export button itself)
   const exportContent = document.createElement('div');
   exportContent.style.padding = '20px';
