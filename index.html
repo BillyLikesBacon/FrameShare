@@ -517,6 +517,8 @@ td input {
 </div>
 <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+
 </script>
 <script>
 class BowlingGame {
@@ -1051,7 +1053,9 @@ function checkIfAllPlayersFinished() {
       if (table) table.classList.add('active');
       document.getElementById('finish-screen').appendChild(clone);
     });
-    conn.send('finish');
+    if (conn && conn.open) {
+      conn.send('finish');
+    }
     if (typeof showFinishScreen === "function") {
       showFinishScreen();
     }
@@ -1076,17 +1080,39 @@ document.getElementById('export-pdf').addEventListener('click', () => {
     exportContent.appendChild(clone);
   });
 
+
+    const client = supabase.createClient(
+      'https://wlhdifrealkmsiafaxzx.supabase.co', // ⬅️ replace this
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsaGRpZnJlYWxrbXNpYWZheHp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NDU4NjIsImV4cCI6MjA2NTUyMTg2Mn0.XCkuw2NW1-zREzbg9fvq5a2RiYFym6lnI28LZkUbuiA'                // ⬅️ and this
+    );
+
   // Use html2pdf to export
   html2pdf()
     .from(exportContent)
     .set({
       margin: 10,
-      filename: 'bowling_scores.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     })
-    .save();
+    .outputPdf('blob') // important: get a Blob instead of saving
+    .then(async (pdfBlob) => {
+      const fileName = `bowling_scores_${Date.now()}.pdf`;
+
+      const { data, error } = await client.storage
+        .from('pdfs') // 👈 REPLACE with your Supabase bucket name
+        .upload(`pdfs/${fileName}`, pdfBlob, {
+          contentType: 'application/pdf',
+          upsert: true
+        });
+
+      if (error) {
+        console.error('Upload failed:', error.message);
+      } else {
+        console.log('PDF uploaded to Supabase:', data.path);
+      }
+    });
+
 });
 
 
