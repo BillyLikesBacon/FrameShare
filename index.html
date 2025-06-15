@@ -522,7 +522,7 @@ td input {
 <script type="module">
     import { createClient } from "https://cdn.skypack.dev/@supabase/supabase-js";
 
-    const supabase = createClient(
+    const client = createClient(
       "https://wlhdifrealkmsiafaxzx.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsaGRpZnJlYWxrbXNpYWZheHp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NDU4NjIsImV4cCI6MjA2NTUyMTg2Mn0.XCkuw2NW1-zREzbg9fvq5a2RiYFym6lnI28LZkUbuiA"
     );
@@ -1089,11 +1089,6 @@ document.getElementById('export-pdf').addEventListener('click', () => {
     exportContent.appendChild(clone);
   });
 
-    
-    const client = supabase.createClient(
-      'https://wlhdifrealkmsiafaxzx.supabase.co', // ⬅️ replace this
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsaGRpZnJlYWxrbXNpYWZheHp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NDU4NjIsImV4cCI6MjA2NTUyMTg2Mn0.XCkuw2NW1-zREzbg9fvq5a2RiYFym6lnI28LZkUbuiA'                // ⬅️ and this
-    );
 
   // Use html2pdf to export
   html2pdf()
