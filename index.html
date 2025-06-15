@@ -519,16 +519,7 @@ td input {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 
-<script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    const supabase = createClient(
-      'https://wlhdifrealkmsiafaxzx.supabase.co', 
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsaGRpZnJlYWxrbXNpYWZheHp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NDU4NjIsImV4cCI6MjA2NTUyMTg2Mn0.XCkuw2NW1-zREzbg9fvq5a2RiYFym6lnI28LZkUbuiA'
-    );
-
-
-</script>
 <script>
 class BowlingGame {
   constructor(name) {
@@ -1029,27 +1020,6 @@ BowlingGame.prototype.addThrow = function(pins) {
 };
 
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    const finishScreen = document.getElementById('finish-screen');
-    const closeBtn = document.getElementById('close-finish-screen');
-
-    // Hide finish screen on load just in case
-    finishScreen.style.display = 'none';
-
-    closeBtn.addEventListener('click', () => {
-      finishScreen.style.display = 'none';
-    });
-
-    window.showFinishScreen = function() {
-      finishScreen.style.display = 'flex';
-    }
-
-    window.hideFinishScreen = function() {
-      finishScreen.style.display = 'none';
-    }
-  });
-
 function checkIfAllPlayersFinished() {
   if (players.length && players.every(p => p.finished)) {
     console.log("🎳 All players are done!");
@@ -1070,6 +1040,16 @@ function checkIfAllPlayersFinished() {
     }
   }
 }
+
+</script>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabase = createClient(
+  'https://wlhdifrealkmsiafaxzx.supabase.co', 
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsaGRpZnJlYWxrbXNpYWZheHp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NDU4NjIsImV4cCI6MjA2NTUyMTg2Mn0.XCkuw2NW1-zREzbg9fvq5a2RiYFym6lnI28LZkUbuiA'
+);
 
 
 
@@ -1127,7 +1107,7 @@ document.getElementById('export-pdf').addEventListener('click', async () => {
     alert('PDF uploaded successfully!');
   }
 });
-
 </script>
+
 </body>
 </html>
