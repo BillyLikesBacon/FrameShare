@@ -1080,6 +1080,7 @@ document.getElementById('export-pdf').addEventListener('click', () => {
     exportContent.appendChild(clone);
   });
 
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
     const client = supabase.createClient(
       'https://wlhdifrealkmsiafaxzx.supabase.co', // ⬅️ replace this
