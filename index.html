@@ -1086,7 +1086,8 @@ document.getElementById('export-pdf').addEventListener('click', () => {
     exportContent.appendChild(clone);
   });
 
-
+  console.log('Generating PDF...');
+  
   // Use html2pdf to export
   html2pdf()
     .from(exportContent)
