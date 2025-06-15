@@ -1040,74 +1040,70 @@ function checkIfAllPlayersFinished() {
     }
   }
 }
-
 </script>
-
 <script type="module">
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-const supabase = createClient(
-  'https://wlhdifrealkmsiafaxzx.supabase.co', 
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsaGRpZnJlYWxrbXNpYWZheHp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NDU4NjIsImV4cCI6MjA2NTUyMTg2Mn0.XCkuw2NW1-zREzbg9fvq5a2RiYFym6lnI28LZkUbuiA'
-);
+  const supabase = createClient(
+    'https://wlhdifrealkmsiafaxzx.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndsaGRpZnJlYWxrbXNpYWZheHp4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk5NDU4NjIsImV4cCI6MjA2NTUyMTg2Mn0.XCkuw2NW1-zREzbg9fvq5a2RiYFym6lnI28LZkUbuiA'
+  );
 
+  document.getElementById('export-pdf').addEventListener('click', async () => {
+    const finishScreen = document.getElementById('finish-screen');
 
+    const exportContent = document.createElement('div');
+    exportContent.style.padding = '20px';
+    exportContent.style.backgroundColor = '#fff';
+    exportContent.style.color = '#000';
 
-document.getElementById('export-pdf').addEventListener('click', async () => {
-  const finishScreen = document.getElementById('finish-screen');
+    const playerContainers = finishScreen.querySelectorAll('.player-container');
+    playerContainers.forEach(container => {
+      const clone = container.cloneNode(true);
+      clone.style.marginBottom = '20px';
+      clone.style.border = '1px solid black';
+      exportContent.appendChild(clone);
+    });
 
-  // Create container with cloned player containers
-  const exportContent = document.createElement('div');
-  exportContent.style.padding = '20px';
-  exportContent.style.backgroundColor = '#fff';
-  exportContent.style.color = '#000';
-
-  const playerContainers = finishScreen.querySelectorAll('.player-container');
-  playerContainers.forEach(container => {
-    const clone = container.cloneNode(true);
-    clone.style.marginBottom = '20px';
-    clone.style.border = '1px solid black'; // thin black border
-    exportContent.appendChild(clone);
-  });
-
-  // Generate PDF as base64 data URI string
-  const base64 = await html2pdf()
-    .from(exportContent)
-    .set({
+    // Generate PDF blob
+    const opt = {
       margin: 10,
-      filename: 'bowling_scores.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    })
-    .outputPdf('datauristring');
+    };
 
-  // Extract base64 part (remove "data:application/pdf;base64," prefix)
-  const base64Data = base64.split(',')[1];
+    const worker = html2pdf().from(exportContent).set(opt);
+    const blob = await worker.outputPdf('blob');
 
-  // Convert base64 string to Uint8Array
-  const binaryString = atob(base64Data);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
+    // Format date & time as YYYY-MM-DD_HH:MM
+    const now = new Date();
+    const pad = (n) => n.toString().padStart(2, '0');
+    const formatted = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}_${pad(now.getHours())}.${pad(now.getMinutes())}`;
+    const filename = `bowling_scores_${formatted}.pdf`;
 
-  // Convert Uint8Array to File object
-  const file = new File([bytes], `bowling_scores_${Date.now()}.pdf`, { type: 'application/pdf' });
+    // Upload to Supabase
+    const { data, error } = await supabase.storage.from('pdfs').upload(filename, blob);
 
-  // Upload file to Supabase Storage bucket "pdfs"
-  const { data, error } = await supabase.storage.from('pdfs').upload(file.name, file);
+    if (error) {
+      console.error('Upload failed:', error);
+      alert('Upload failed. Check console.');
+      return;
+    }
 
-  if (error) {
-    console.error('Upload failed:', error);
-    alert('Upload failed. Check console for details.');
-  } else {
-    console.log('Upload succeeded:', data);
-    alert('PDF uploaded successfully!');
-  }
-});
+    // Trigger download
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    console.log('PDF uploaded and downloaded!');
+  });
 </script>
+
+
 
 </body>
 </html>
