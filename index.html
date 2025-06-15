@@ -863,6 +863,7 @@ function sendState() {
       conn.on('data', (data) => {
         if (data === 'finish') {
           console.log("🎳 All players are done!");
+          showFinishScreen()
           if (typeof showFinishScreen === "function") {
             showFinishScreen();
           }
