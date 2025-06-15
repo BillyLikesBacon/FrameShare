@@ -1099,11 +1099,6 @@ document.getElementById('export-pdf').addEventListener('click', () => {
     })
     .outputPdf('blob') // important: get a Blob instead of saving
     .then(async (pdfBlob) => {
-      
-      .then(async (pdfBlob) => {
-        console.log('PDF Blob:', pdfBlob);
-
-
       const fileName = `bowling_scores_${Date.now()}.pdf`;
 
       const { data, error } = await client.storage
