@@ -1101,7 +1101,7 @@ document.getElementById('export-pdf').addEventListener('click', () => {
     .then(async (pdfBlob) => {
       const fileName = `bowling_scores_${Date.now()}.pdf`;
 
-      const { data, error } = await client.storage
+     /* const { data, error } = await client.storage
         .from('pdfs') // 👈 REPLACE with your Supabase bucket name
         .upload(`pdfs/${fileName}`, pdfBlob, {
           contentType: 'application/pdf',
@@ -1112,13 +1112,11 @@ document.getElementById('export-pdf').addEventListener('click', () => {
         console.error('Upload failed:', error.message);
       } else {
         console.log('PDF uploaded to Supabase:', data.path);
-      }
+      
+      } */
     });
 
 });
-
-
-
 </script>
 </body>
 </html>
