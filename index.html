@@ -1071,7 +1071,7 @@ function checkIfAllPlayersFinished() {
 
 document.getElementById('export-pdf').addEventListener('click', () => {
   const finishScreen = document.getElementById('finish-screen');
-  console.log('Export button clicked');
+
   // Create a container with only the player containers (avoid export button itself)
   const exportContent = document.createElement('div');
   exportContent.style.padding = '20px';
@@ -1086,36 +1086,17 @@ document.getElementById('export-pdf').addEventListener('click', () => {
     exportContent.appendChild(clone);
   });
 
-  console.log('Generating PDF...');
-
   // Use html2pdf to export
   html2pdf()
     .from(exportContent)
     .set({
       margin: 10,
+      filename: 'bowling_scores.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     })
-    .outputPdf('blob') // important: get a Blob instead of saving
-    .then(async (pdfBlob) => {
-      const fileName = `bowling_scores_${Date.now()}.pdf`;
-
-     /* const { data, error } = await client.storage
-        .from('pdfs') // 👈 REPLACE with your Supabase bucket name
-        .upload(`pdfs/${fileName}`, pdfBlob, {
-          contentType: 'application/pdf',
-          upsert: true
-        });
-
-      if (error) {
-        console.error('Upload failed:', error.message);
-      } else {
-        console.log('PDF uploaded to Supabase:', data.path);
-      
-      } */
-    });
-
+    .save();
 });
 </script>
 </body>
