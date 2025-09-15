@@ -1,0 +1,3 @@
+# robots.txt (at https://frameshare.vercel.app/robots.txt)
+User-agent: *
+Allow: /
