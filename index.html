@@ -802,7 +802,37 @@ function generateShortId() {
 }
 
 const shortId = generateShortId();
-const peer = new Peer(shortId);
+
+// ✅ Added Metered.ca STUN/TURN servers here
+const peer = new Peer(shortId, {
+  config: {
+    iceServers: [
+      {
+        urls: "stun:stun.relay.metered.ca:80",
+      },
+      {
+        urls: "turn:standard.relay.metered.ca:80",
+        username: "7725adb03f58d851fd638c2e",
+        credential: "FhM4ObpJpm+JB/3n",
+      },
+      {
+        urls: "turn:standard.relay.metered.ca:80?transport=tcp",
+        username: "7725adb03f58d851fd638c2e",
+        credential: "FhM4ObpJpm+JB/3n",
+      },
+      {
+        urls: "turn:standard.relay.metered.ca:443",
+        username: "7725adb03f58d851fd638c2e",
+        credential: "FhM4ObpJpm+JB/3n",
+      },
+      {
+        urls: "turns:standard.relay.metered.ca:443?transport=tcp",
+        username: "7725adb03f58d851fd638c2e",
+        credential: "FhM4ObpJpm+JB/3n",
+      },
+    ]
+  }
+});
 
 const connectionStatus = document.getElementById('connection-status');
 const myIdDisplay = document.getElementById('my-id');
@@ -863,6 +893,7 @@ function setupConnectionHandlers(connection) {
     conn = null;
   });
 }
+
 
 function sendState() {
   if (conn && conn.open) {
